@@ -43,3 +43,20 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Local environment and editor artifacts
+# Do not commit environment files containing secrets
+.env
+
+# Flutter/Dart generated metadata and plugin artifacts (do not track)
+.metadata
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IntelliJ/Android Studio gradle wrappers and caches
+/.gradle/
+android/.gradle/
+
+# Windows build output and temp
+windows/flutter/ephemeral/
+
