@@ -21,7 +21,7 @@ This repository contains the Flutter client application. The backend services ar
 # Clone the Repository
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/Ashenafi-Bancha/ethiofundmobile
 cd ethiofundmobile
 flutter pub get
 ```
@@ -44,14 +44,16 @@ SUPABASE_ANON_KEY=PASTE_YOUR_SUPABASE_ANON_KEY_HERE
 > This project uses only the Supabase anon public key (client-side key), not the service_role key.
 >
 > For security awareness and best practices, these credentials will be regenerated and replaced after grading and evaluation are completed.
-> 
-> Create a .env file in the project root and add:
-
+>
+ 
+> Create a .env file in the project root and add
 ```bash
+
 SUPABASE_URL=https://ujpzjgsrhtoumhpuxywh.supabase.co
 SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqcHpqZ3NyaHRvdW1ocHV4eXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMTAyNjcsImV4cCI6MjA5NTU4NjI2N30.9uhWuWjfcV6SNAfHGqTbPlfin0RbRhWE0j23zIhLPZA
-``` 
 
+``` 
+----
 > **Important**
 >
 > This project uses only the Supabase **anon public key** for client-side access.
