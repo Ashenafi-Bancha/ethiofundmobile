@@ -93,7 +93,7 @@ flutter run -d windows
 
 If you see build errors, run `flutter doctor` and install any missing Visual Studio components (Desktop development with C++).
 
-### Web — Chrome
+### Web(Chrome)
 
 Enable web support and run on Chrome:
 
@@ -103,7 +103,7 @@ flutter pub get
 flutter run -d chrome
 ```
 
-### Web — Edge
+### Web(Edge)
 
 If Edge appears as a device, run directly; otherwise use the web-server and open in Edge manually:
 
@@ -267,7 +267,7 @@ Verify Row Level Security (RLS) policies in Supabase.
 
 # Contributors
 
- * 1. Ashenafi Bancha
- * 2. Elham Jemal
- * 3. Feruza Hassen
- * 4. Ihsan Jemal
+ * Ashenafi Bancha
+ * Elham Jemal
+ * Feruza Hassen
+ * Ihsan Jemal
