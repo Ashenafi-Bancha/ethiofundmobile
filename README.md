@@ -50,26 +50,9 @@ flutter pub get
 ---
 
 # ⚙️ Environment Variables Setup
+> ⚠️ Evaluation Note:
+> For evaluation and testing purposes only, the `.env` configuration values have been documented and shared in this README to simplify setup and allow reviewers to run the project without additional configuration steps. In a production environment, the `.env` file must never be committed or exposed publicly, and all sensitive keys must be securely managed using environment secrets or backend configuration.
 
-Create a `.env` file in the project root.
-
-### Windows:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-### Linux / macOS:
-
-```bash
-cp .env.example .env
-```
-
-Then fill in:
-
-```env
-SUPABASE_URL=YOUR_SUPABASE_URL
-SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
 ```
 
 ---
@@ -247,12 +230,12 @@ Enable RLS policies properly.
 
 # 👥 Contributors
 
-| Name            |
-| --------------- |
-| Ashenafi Bancha |
-| Elham Jemal     |
-| Feruza Hassen   |
-| Ihsan Jemal     |
+| Name            |ID        |
+| --------------- |----------|
+| Ashenafi Bancha |  UGR/1796/15        |
+| Elham Jemal     |  UGR/1757/14       |
+| Feruza Hassen   |   UGR/6423/15        |
+| Ihsan Jemal     |      UGR/9433/15      |
 
 ```
 
