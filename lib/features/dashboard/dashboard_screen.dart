@@ -37,6 +37,13 @@ class DashboardScreen extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
+            if (role == 'organizer' || role == 'admin') ...[
+              _OrganizerHeroCard(
+                onCreateCampaign: () => context.go('/campaigns/create'),
+                onManageCampaigns: () => context.go('/my-campaigns'),
+              ),
+              const SizedBox(height: 16),
+            ],
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(18),
@@ -199,6 +206,98 @@ class _QuickActionGrid extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _OrganizerHeroCard extends StatelessWidget {
+  const _OrganizerHeroCard({required this.onCreateCampaign, required this.onManageCampaigns});
+
+  final VoidCallback onCreateCampaign;
+  final VoidCallback onManageCampaigns;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF163B1F), Color(0xFF2E7D32), Color(0xFF4CAF50)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: const [
+          BoxShadow(color: Color(0x22000000), blurRadius: 18, offset: Offset(0, 10)),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 46,
+                  height: 46,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.14),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(Icons.campaign_outlined, color: Colors.white),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Organizer workspace',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w800),
+                      ),
+                      const SizedBox(height: 2),
+                      const Text(
+                        'Build and manage your fundraising campaigns.',
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Create a campaign, publish your story, and start receiving donations from supporters across Ethiopia.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
+            ),
+            const SizedBox(height: 18),
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                FilledButton(
+                  onPressed: onCreateCampaign,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: AppColors.primary,
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+                  ),
+                  child: const Text('Create campaign'),
+                ),
+                OutlinedButton(
+                  onPressed: onManageCampaigns,
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    side: const BorderSide(color: Colors.white70),
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+                  ),
+                  child: const Text('Manage campaigns'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

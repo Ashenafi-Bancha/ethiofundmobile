@@ -111,9 +111,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(path: '/campaigns', builder: (context, state) => const BrowseScreen()),
-              GoRoute(path: '/campaigns/:id', builder: (context, state) => CampaignDetailScreen(campaignId: state.pathParameters['id']!)),
               GoRoute(path: '/campaigns/create', builder: (context, state) => const CreateCampaignScreen()),
               GoRoute(path: '/campaigns/:id/edit', builder: (context, state) => EditCampaignScreen(campaignId: state.pathParameters['id']!)),
+              GoRoute(path: '/campaigns/:id', builder: (context, state) => CampaignDetailScreen(campaignId: state.pathParameters['id']!)),
               GoRoute(path: '/my-campaigns', builder: (context, state) => const MyCampaignsScreen()),
             ],
           ),
