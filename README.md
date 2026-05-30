@@ -267,7 +267,7 @@ Verify Row Level Security (RLS) policies in Supabase.
 
 # Contributors
 
- * Ashenafi Bancha
- * Elham Jemal
- * Feruza Hassen
- * Ihsan Jemal
+ * Ashenafi Bancha UGR/1796/15
+ * Elham Jemal     UGR/1757/14
+ * Feruza Hassen   UGR/6423/15
+ * Ihsan Jemal     UGR/9433/15
