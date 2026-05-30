@@ -49,6 +49,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _obscurePassword = true;
+  late String _selectedRole;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedRole = widget.initialRole == 'organizer' ? 'organizer' : 'donor';
+  }
 
   @override
   void dispose() {
@@ -149,6 +156,23 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               ),
                               validator: validatePassword,
                             ),
+                            const SizedBox(height: 16),
+                            DropdownButtonFormField<String>(
+                              initialValue: _selectedRole,
+                              decoration: _fieldDecoration(
+                                'Account type',
+                                'Choose how you will use EthioFund',
+                              ),
+                              items: const [
+                                DropdownMenuItem(value: 'donor', child: Text('Donor')),
+                                DropdownMenuItem(value: 'organizer', child: Text('Organizer')),
+                              ],
+                              onChanged: (value) {
+                                if (value != null) {
+                                  setState(() => _selectedRole = value);
+                                }
+                              },
+                            ),
                             const SizedBox(height: 24),
                             PrimaryButton(
                               label: 'Create Account',
@@ -204,10 +228,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             email: _emailController.text.trim(),
             phone: _phoneController.text.trim(),
             password: _passwordController.text,
-            role: 'donor',
+            role: _selectedRole,
           );
       if (!mounted) return;
-      context.go('/home');
+      context.go('/dashboard');
     } catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(

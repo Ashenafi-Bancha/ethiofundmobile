@@ -30,7 +30,21 @@ flutter pub get
 
 # Environment Variables Setup
 
-Create a `.env` file in the project root and add the following:
+Create a local `.env` file in the project root. The app loads this file from [lib/main.dart](lib/main.dart), so it must exist before running Flutter.
+
+On Windows PowerShell, copy the template first:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+On macOS/Linux:
+
+```bash
+cp .env.example .env
+```
+
+Then fill in your Supabase values:
 
 ```env
 SUPABASE_URL=PASTE_YOUR_SUPABASE_URL_HERE
@@ -39,24 +53,11 @@ SUPABASE_ANON_KEY=PASTE_YOUR_SUPABASE_ANON_KEY_HERE
 
 ## *Security Note*
 
-> The following Supabase credentials are shared only for project evaluation and testing purposes.
+> Only the Supabase anon public key is used in the Flutter client.
 >
-> This project uses only the Supabase anon public key (client-side key), not the service_role key.
+> Do not commit `.env` to GitHub. The file is ignored by `.gitignore`, and the repository includes `.env.example` for setup.
 >
-> For security awareness and best practices, these credentials will be regenerated and replaced after grading and evaluation are completed.
-> 
-> Create a .env file in the project root and add:
-
-```bash
-SUPABASE_URL=https://ujpzjgsrhtoumhpuxywh.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqcHpqZ3NyaHRvdW1ocHV4eXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMTAyNjcsImV4cCI6MjA5NTU4NjI2N30.9uhWuWjfcV6SNAfHGqTbPlfin0RbRhWE0j23zIhLPZA
-``` 
-
-> **Important**
->
-> This project uses only the Supabase **anon public key** for client-side access.
->
-> The `service_role` key is NOT used or exposed in this mobile application for security reasons.
+> The `service_role` key is never used or exposed in the mobile app.
 
 ---
 
@@ -91,6 +92,25 @@ flutter run -d windows
 
 If you see build errors, run `flutter doctor` and install any missing Visual Studio components (Desktop development with C++).
 
+### App icon and logo for Desktop & Web
+
+- This project already includes the EthioFund logo at `assets/images/ethiofund_logo.png` and the mobile launcher is managed by `flutter_launcher_icons`.
+- For web (Chrome/Edge) the app uses the same logo as the favicon, PWA icon, and initial loading splash. These are configured in `web/index.html` and `web/manifest.json` to reference `assets/images/ethiofund_logo.png` so the branding matches mobile.
+- For Windows the application binary uses `windows/runner/resources/app_icon.ico` for the taskbar and executable icon. To make the Windows icon match the EthioFund logo you should:
+
+  1. Create an ICO file from your PNG (multiple sizes recommended: 16, 32, 48, 256). Example using ImageMagick:
+
+```bash
+magick convert assets/images/ethiofund_logo.png -resize 256x256 favicon-256.png
+magick convert favicon-256.png -define icon:auto-resize=64,48,32,16 windows/runner/resources/app_icon.ico
+```
+
+  2. Replace the existing `windows/runner/resources/app_icon.ico` with the generated file.
+  3. Rebuild the Windows app: `flutter build windows` (or `flutter run -d windows` for debug).
+
+Notes:
+- If you don't have ImageMagick installed, there are online converters or GUI tools to generate `.ico` from PNG.
+- The project uses `MaterialApp.title = 'EthioFund'` so desktop window title and web tab title will show the friendly name.
 ### Web — Chrome
 
 Enable web support and run on Chrome:
@@ -238,7 +258,9 @@ await Supabase.initialize(
 
 ## Missing Environment Variables
 
-Ensure `.env` exists in the project root 
+Ensure `.env` exists in the project root and contains `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
+
+If you are starting from the template, copy `.env.example` to `.env` first and then fill in the real values.
 
 ## Authentication Errors
 

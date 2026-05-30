@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/utils/validators.dart';
 import '../../providers/campaign_provider.dart';
-import '../../services/payment_service.dart';
+import '../../services/donation_service.dart';
+import '../../services/supabase_service.dart';
 import '../../shared/widgets/error_widget.dart';
 import '../../shared/widgets/loading_widget.dart';
 import '../../shared/widgets/primary_button.dart';
-import 'payment_webview_screen.dart';
 
 class DonateScreen extends ConsumerStatefulWidget {
   const DonateScreen({super.key, required this.campaignId});
@@ -146,27 +147,47 @@ class _DonateScreenState extends ConsumerState<DonateScreen> {
       return;
     }
 
+    final router = GoRouter.of(context);
     final amount = double.parse(_amountController.text.trim());
     final campaignId = int.parse(widget.campaignId);
+    final profile = await ref.read(supabaseServiceProvider).fetchCurrentProfile();
+    if (profile == null) {
+      if (!mounted) return;
+      router.go('/login');
+      return;
+    }
+
+    final nameParts = profile.fullName.trim().split(RegExp(r'\s+')).where((part) => part.isNotEmpty).toList(growable: false);
+    final firstName = nameParts.isNotEmpty ? nameParts.first : 'EthioFund';
+    final lastName = nameParts.length > 1 ? nameParts.skip(1).join(' ') : 'Supporter';
 
     setState(() => _isSubmitting = true);
     try {
-      final checkoutUrl = await ref.read(paymentServiceProvider).initializePayment(
-            campaignId: campaignId,
+      final result = await ref.read(donationServiceProvider).initiateChapaPayment(
             amount: amount,
+            email: profile.email,
+            firstName: firstName,
+            lastName: lastName,
+            campaignId: campaignId,
+            userId: profile.userId,
             isAnonymous: _isAnonymous,
           );
 
       if (!mounted) return;
-      if (checkoutUrl.isEmpty) {
-        context.go('/payment/failed');
+      final launched = await launchUrl(
+        Uri.parse(result.checkoutUrl),
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched) {
+        router.go('/payment/failed', extra: campaignId);
         return;
       }
 
-      context.push('/payment', extra: checkoutUrl);
+      router.go('/payment/success', extra: campaignId);
     } catch (error) {
       if (!mounted) return;
-      context.go('/payment/failed');
+      router.go('/payment/failed', extra: campaignId);
     } finally {
       if (mounted) {
         setState(() => _isSubmitting = false);

@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.ethiofund" "\0"
-            VALUE "FileDescription", "ethiofundmobile" "\0"
+            VALUE "FileDescription", "EthioFund" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "ethiofundmobile" "\0"
+            VALUE "InternalName", "EthioFund" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.ethiofund. All rights reserved." "\0"
-            VALUE "OriginalFilename", "ethiofundmobile.exe" "\0"
-            VALUE "ProductName", "ethiofundmobile" "\0"
+            VALUE "OriginalFilename", "EthioFund.exe" "\0"
+            VALUE "ProductName", "EthioFund" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -23,16 +23,26 @@
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="ethiofundmobile">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <meta name="apple-mobile-web-app-title" content="EthioFund">
+  <link rel="apple-touch-icon" href="assets/images/ethiofund_logo.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <!-- Favicon (uses packaged asset) -->
+  <link rel="icon" type="image/png" href="assets/images/ethiofund_logo.png"/>
 
-  <title>ethiofundmobile</title>
+  <title>EthioFund</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <!-- Lightweight splash shown while Flutter initializes -->
+  <style>
+    #splash {
+      display:flex;align-items:center;justify-content:center;height:100vh;width:100vw;background:#ffffff;
+      margin:0;padding:0;overflow:hidden;
+    }
+    #splash img{max-width:40vmin;max-height:40vmin}
+  </style>
+  <div id="splash"><img src="assets/images/ethiofund_logo.png" alt="EthioFund"/></div>
+
   <!--
     You can customize the "flutter_bootstrap.js" script.
     This is useful to provide a custom configuration to the Flutter loader
@@ -42,5 +52,14 @@
     * https://docs.flutter.dev/platform-integration/web/initialization
   -->
   <script src="flutter_bootstrap.js" async></script>
+  <script>
+    // Remove the splash element once Flutter has initialized and replaced the DOM.
+    window.addEventListener('flutter-first-frame', () => {
+      const s = document.getElementById('splash');
+      if (s) s.style.display = 'none';
+    });
+    // Fallback: remove splash after 8s in case event is not fired
+    setTimeout(()=>{const s=document.getElementById('splash'); if(s) s.style.display='none';},8000);
+  </script>
 </body>
 </html>

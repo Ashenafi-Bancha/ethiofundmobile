@@ -176,7 +176,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .read(authNotifierProvider.notifier)
           .login(_emailController.text.trim(), _passwordController.text);
       if (!mounted) return;
-      context.go('/home');
+        context.go('/dashboard');
     } catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(

@@ -5,7 +5,9 @@ import '../../core/constants/app_colors.dart';
 import '../../shared/widgets/primary_button.dart';
 
 class PaymentFailedScreen extends StatelessWidget {
-  const PaymentFailedScreen({super.key});
+  const PaymentFailedScreen({super.key, this.campaignId});
+
+  final int? campaignId;
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +22,17 @@ class PaymentFailedScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Text('Payment Failed', style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800)),
               const SizedBox(height: 8),
-              const Text('We could not complete the payment checkout.'),
+              const Text('We could not open or initialize the payment checkout.'),
               const SizedBox(height: 24),
               PrimaryButton(
-                label: 'Try Again',
-                onPressed: () => context.go('/campaigns'),
+                label: campaignId == null ? 'Try Again' : 'Try Again',
+                onPressed: () {
+                  if (campaignId == null) {
+                    context.go('/campaigns');
+                  } else {
+                    context.go('/donate/$campaignId');
+                  }
+                },
               ),
             ],
           ),

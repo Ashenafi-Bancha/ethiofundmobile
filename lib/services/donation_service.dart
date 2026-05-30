@@ -1,8 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/donation_model.dart';
 import 'supabase_service.dart';
+
+class DonationCheckoutResult {
+  const DonationCheckoutResult({
+    required this.checkoutUrl,
+    required this.paymentReference,
+    required this.donationId,
+  });
+
+  final String checkoutUrl;
+  final String paymentReference;
+  final int donationId;
+}
 
 class DonationService {
   DonationService(this._supabaseService);
@@ -10,6 +23,62 @@ class DonationService {
   final SupabaseService _supabaseService;
 
   SupabaseClient get _client => _supabaseService.client;
+
+  Future<DonationCheckoutResult> initiateChapaPayment({
+    required double amount,
+    required String email,
+    required String firstName,
+    required String lastName,
+    required int campaignId,
+    required int userId,
+    bool isAnonymous = false,
+  }) async {
+    final session = _client.auth.currentSession;
+    final accessToken = session?.accessToken;
+    if (accessToken == null || accessToken.isEmpty) {
+      throw StateError('You must be signed in to donate.');
+    }
+
+    final response = await Dio().post<Map<String, dynamic>>(
+      'https://ujpzjgsrhtoumhpuxywh.supabase.co/functions/v1/chapa-initiate-payment',
+      data: {
+        'amount': amount,
+        'email': email,
+        'first_name': firstName,
+        'last_name': lastName,
+        'campaign_id': campaignId,
+        'user_id': userId,
+        'is_anonymous': isAnonymous,
+      },
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-Type': 'application/json',
+        },
+        responseType: ResponseType.json,
+      ),
+    );
+
+    final payload = response.data;
+    if (payload == null) {
+      throw StateError('Payment service returned an empty response.');
+    }
+
+    final checkoutUrl = payload['checkout_url']?.toString() ?? payload['checkoutUrl']?.toString() ?? '';
+    final paymentReference = payload['payment_reference']?.toString() ?? payload['paymentReference']?.toString() ?? '';
+    final donationIdRaw = payload['donation_id'] ?? payload['donationId'];
+    final donationId = donationIdRaw is num ? donationIdRaw.toInt() : int.tryParse(donationIdRaw?.toString() ?? '') ?? 0;
+
+    if (checkoutUrl.isEmpty) {
+      throw StateError('Payment service did not provide a checkout URL.');
+    }
+
+    return DonationCheckoutResult(
+      checkoutUrl: checkoutUrl,
+      paymentReference: paymentReference,
+      donationId: donationId,
+    );
+  }
 
   Future<DonationModel> createDonation({
     required int campaignId,

@@ -13,6 +13,7 @@ import '../../features/campaign/campaign_detail_screen.dart';
 import '../../features/campaign/create_campaign_screen.dart';
 import '../../features/campaign/edit_campaign_screen.dart';
 import '../../features/campaign/my_campaigns_screen.dart';
+import '../../features/dashboard/dashboard_screen.dart';
 import '../../features/donation/donate_screen.dart';
 import '../../features/donation/my_donations_screen.dart';
 import '../../features/donation/payment_failed_screen.dart';
@@ -42,6 +43,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         location.startsWith('/donate/') ||
         location == '/payment' ||
         location == '/my-donations' ||
+      location == '/dashboard' ||
         location.startsWith('/withdrawals/') ||
         location == '/my-withdrawals' ||
         location == '/profile' ||
@@ -73,7 +75,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       }
 
       if (loggedIn && (location == '/login' || location == '/register')) {
-        return '/home';
+        return '/dashboard';
       }
 
       if (userRole == 'donor' && (isOrganizerRoute(location) || isAdminRoute(location))) {
@@ -97,6 +99,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/register',
         builder: (context, state) => RegisterScreen(initialRole: state.uri.queryParameters['role'] ?? 'donor'),
       ),
+      GoRoute(path: '/dashboard', builder: (context, state) => const DashboardScreen()),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) => AppShell(navigationShell: navigationShell),
         branches: [
@@ -119,8 +122,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(path: '/my-donations', builder: (context, state) => const MyDonationsScreen()),
               GoRoute(path: '/donate/:id', builder: (context, state) => DonateScreen(campaignId: state.pathParameters['id']!)),
               GoRoute(path: '/payment', builder: (context, state) => PaymentWebViewScreen(checkoutUrl: state.extra as String? ?? '')),
-              GoRoute(path: '/payment/success', builder: (context, state) => const PaymentSuccessScreen()),
-              GoRoute(path: '/payment/failed', builder: (context, state) => const PaymentFailedScreen()),
+              GoRoute(path: '/payment/success', builder: (context, state) => PaymentSuccessScreen(campaignId: state.extra as int?)),
+              GoRoute(path: '/payment/failed', builder: (context, state) => PaymentFailedScreen(campaignId: state.extra as int?)),
             ],
           ),
           StatefulShellBranch(

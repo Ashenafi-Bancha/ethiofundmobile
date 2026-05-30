@@ -36,7 +36,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       return;
     }
 
-    context.go('/home');
+    final isLoggedIn = ref.read(isAuthenticatedProvider);
+    context.go(isLoggedIn ? '/dashboard' : '/home');
   }
 
   @override

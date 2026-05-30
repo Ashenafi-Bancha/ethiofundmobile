@@ -151,7 +151,7 @@ class _CreateCampaignScreenState extends ConsumerState<CreateCampaignScreen> {
     try {
       String? imageUrl;
       if (_imageFile != null) {
-        imageUrl = await ref.read(campaignServiceProvider).uploadCampaignImage(_imageFile!);
+        imageUrl = await ref.read(campaignServiceProvider).uploadCampaignImage(File(_imageFile!.path));
       }
 
       final campaign = await ref.read(campaignServiceProvider).createCampaign(

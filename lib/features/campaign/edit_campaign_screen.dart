@@ -187,7 +187,7 @@ class _EditCampaignScreenState extends ConsumerState<EditCampaignScreen> {
     try {
       String? imageUrl = _existingImageUrl;
       if (_imageFile != null) {
-        imageUrl = await ref.read(campaignServiceProvider).uploadCampaignImage(_imageFile!);
+        imageUrl = await ref.read(campaignServiceProvider).uploadCampaignImage(File(_imageFile!.path));
       }
 
       await ref.read(campaignServiceProvider).updateCampaign(campaignId, {

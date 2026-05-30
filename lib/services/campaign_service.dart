@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/campaign_model.dart';
@@ -41,11 +42,7 @@ class CampaignService {
       'title': title,
       'description': description,
       'goal_amount': goalAmount,
-      'raised_amount': 0,
-      'category': category,
-      'status': 'pending',
       'organizer_id': profile.userId,
-      'organizer_name': profile.fullName,
       'image_url': imageUrl,
     }).select().single();
 
@@ -80,17 +77,14 @@ class CampaignService {
     await _client.from('campaigns').update({'status': 'rejected'}).eq('campaign_id', id);
   }
 
-  Future<String> uploadCampaignImage(XFile xFile) async {
-    final fileName = '${DateTime.now().millisecondsSinceEpoch}_${xFile.name}';
-    final bytes = await xFile.readAsBytes();
-    
-    await _client.storage.from('campaign-images').uploadBinary(
-      fileName,
-      bytes,
-      fileOptions: const FileOptions(contentType: 'image/jpeg', cacheControl: '3600'),
-    );
-    
-    return _client.storage.from('campaign-images').getPublicUrl(fileName);
+  Future<String> uploadCampaignImage(File file) async {
+    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+
+    await _client.storage.from('campaign-images').upload(fileName, file);
+
+    final url = _client.storage.from('campaign-images').getPublicUrl(fileName);
+
+    return url;
   }
 }
 

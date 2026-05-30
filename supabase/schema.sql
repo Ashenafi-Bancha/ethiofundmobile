@@ -38,6 +38,10 @@ campaign_id bigint not null references public.campaigns(campaign_id) on delete c
 donor_id bigint not null references public.profiles(user_id) on delete cascade,
 amount numeric(12,2) not null,
 payment_status text not null default 'pending',
+payment_provider text not null default 'chapa',
+payment_reference text unique,
+checkout_url text,
+paid_at timestamptz,
 is_anonymous boolean not null default false,
 campaign_title text,
 created_at timestamptz not null default now()
@@ -75,6 +79,8 @@ created_at timestamptz not null default now()
 create index if not exists campaigns_status_idx on public.campaigns(status);
 create index if not exists campaigns_organizer_idx on public.campaigns(organizer_id);
 create index if not exists donations_campaign_idx on public.donations(campaign_id);
+create index if not exists donations_status_idx on public.donations(payment_status);
+create index if not exists donations_reference_idx on public.donations(payment_reference);
 create index if not exists comments_campaign_idx on public.comments(campaign_id);
 create index if not exists withdrawals_campaign_idx on public.withdrawals(campaign_id);
 
@@ -251,6 +257,17 @@ and p.role = 'admin'
 )
 );
 
+alter table public.donations
+add column if not exists payment_provider text not null default 'chapa',
+add column if not exists payment_reference text,
+add column if not exists checkout_url text,
+add column if not exists paid_at timestamptz;
+
+create unique index if not exists donations_payment_reference_unique_idx on public.donations(payment_reference)
+where payment_reference is not null;
+
+create index if not exists donations_payment_status_idx on public.donations(payment_status);
+
 drop policy if exists "comments_select_public" on public.comments;
 create policy "comments_select_public"
 on public.comments
@@ -370,9 +387,11 @@ language plpgsql
 security definer
 as $$
 begin
+if (tg_op = 'INSERT' and new.payment_status = 'completed') or (tg_op = 'UPDATE' and old.payment_status is distinct from 'completed' and new.payment_status = 'completed') then
 update public.campaigns
 set raised_amount = coalesce(raised_amount, 0) + coalesce(new.amount, 0)
 where campaign_id = new.campaign_id;
+end if;
 
 return new;
 end;
@@ -381,6 +400,6 @@ $$;
 drop trigger if exists on_donation_created on public.donations;
 
 create trigger on_donation_created
-after insert on public.donations
+after insert or update of payment_status on public.donations
 for each row
 execute function public.handle_donation_insert();

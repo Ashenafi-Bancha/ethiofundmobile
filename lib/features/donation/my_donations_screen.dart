@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/utils/formatters.dart';
-import '../../providers/auth_provider.dart';
 import '../../providers/donation_provider.dart';
 import '../../shared/widgets/error_widget.dart';
 import '../../shared/widgets/loading_widget.dart';
@@ -16,7 +15,6 @@ class MyDonationsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final donationsAsync = ref.watch(myDonationsProvider);
-    final showStatus = ref.watch(userRoleProvider) == 'admin';
 
     return Scaffold(
       appBar: AppBar(title: const Text('My Donations')),
@@ -52,7 +50,7 @@ class MyDonationsScreen extends ConsumerWidget {
                     children: [
                       Text(formatEtb(donation.amount), style: const TextStyle(fontWeight: FontWeight.w700)),
                       const SizedBox(height: 4),
-                      if (showStatus) StatusBadge(status: donation.paymentStatus),
+                      StatusBadge(status: donation.paymentStatus),
                     ],
                   ),
                 ),
