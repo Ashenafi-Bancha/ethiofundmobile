@@ -115,28 +115,7 @@ flutter run -d web-server  # then open http://localhost:xxxx in Edge
 
 Notes:
 - Ensure you have a compatible Chrome or Edge installation on the machine used for testing.
-- For web builds you may want to set `--web-renderer=html` or `--web-renderer=canvaskit` depending on performance and CanvasKit availability.
-
----
-
-## Untrack generated / build files (recommended)
-
-You should not commit generated build artifacts to the repository. I updated `.gitignore` to include common generated files. To remove already-tracked generated files from the repository (without deleting them locally), run the following from the project root:
-
-```bash
-git rm -r --cached build .dart_tool .flutter-plugins-dependencies .metadata 2> /dev/null
-git add .gitignore
-git commit -m "chore: ignore and untrack generated files"
-git push
-```
-
-On Windows PowerShell you can run the same sequence (PowerShell redirects stderr with `2>$null`):
-
-```powershell
-git rm -r --cached build .dart_tool .flutter-plugins-dependencies .metadata 2>$null; git add .gitignore; git commit -m "chore: ignore and untrack generated files"; git push
-```
-
-This removes generated files from the git index while keeping them on your local disk.
+- For web builds you may want to set `--web-renderer=html` or `--web-renderer=canvaskit` depending on performance and CanvasKit availability
 
 ---
 
@@ -267,7 +246,9 @@ Verify Row Level Security (RLS) policies in Supabase.
 
 # Contributors
 
- * Ashenafi Bancha UGR/1796/15
- * Elham Jemal     UGR/1757/14
- * Feruza Hassen   UGR/6423/15
- * Ihsan Jemal     UGR/9433/15
+| Name | ID |
+|------|------|
+| Ashenafi Bancha | UGR/1796/15 |
+| Elham Jemal | UGR/1757/14 |
+| Feruza Hassen | UGR/6423/15 |
+| Ihsan Jemal | UGR/9433/15 |
