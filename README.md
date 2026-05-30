@@ -1,216 +1,159 @@
+
 # EthioFund Mobile
 
 EthioFund Mobile is a cross-platform Flutter application for crowdfunding projects in Ethiopia. It provides role-based user flows for donors, organizers, and administrators, including campaign discovery, donations, user profiles, comments/updates, and admin management.
 
-This repository contains the Flutter client application. The backend services are powered by Supabase (PostgreSQL + Authentication + Storage + Realtime).
+This repository contains the Flutter client application. The backend services are powered by Supabase (PostgreSQL + Authentication + Storage + Realtime) and Chapa for payments.
 
 ---
 
-# Quick Start
+# 🚀 Demo Access Accounts (For Evaluators / Testers)
+
+Please use the following pre-created accounts to test different roles in the system:
+
+## 👤 Donor Account
+- Email: **ashenafibanchabassa01@gmail.com**
+- Password: **387300**
+
+## 🧑‍💼 Organizer Account
+- Email: **feruzhassen@gmail.com**
+- Password: **123456**
+
+## 🛡️ Admin Account
+- Email: **admin@ethiofund.com**
+- Password: **Admin1234**
+
+> ⚠️ These accounts are provided for testing and evaluation purposes only.
+
+---
+
+# 📌 Quick Start
 
 ## Prerequisites
 
-* Flutter SDK (Stable Channel)
-* Dart SDK
-* Android Studio / VS Code
-* Android Emulator or Physical Device
-* Supabase Project
+- Flutter SDK (Stable Channel)
+- Dart SDK
+- Android Studio / VS Code
+- Android Emulator or Physical Device
+- Supabase Project
 
 ---
 
-# Clone the Repository
+# 📥 Clone the Repository
 
 ```bash
 git clone <repo-url>
 cd ethiofundmobile
 flutter pub get
-```
+````
 
 ---
 
-# Environment Variables Setup
+# ⚙️ Environment Variables Setup
 
-Create a local `.env` file in the project root. The app loads this file from [lib/main.dart](lib/main.dart), so it must exist before running Flutter.
+Create a `.env` file in the project root.
 
-On Windows PowerShell, copy the template first:
+### Windows:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-On macOS/Linux:
+### Linux / macOS:
 
 ```bash
 cp .env.example .env
 ```
 
-Then fill in your Supabase values:
+Then fill in:
 
 ```env
-SUPABASE_URL=PASTE_YOUR_SUPABASE_URL_HERE
-SUPABASE_ANON_KEY=PASTE_YOUR_SUPABASE_ANON_KEY_HERE
+SUPABASE_URL=YOUR_SUPABASE_URL
+SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
 ```
-
-## *Security Note*
-
-> Only the Supabase anon public key is used in the Flutter client.
->
-> Do not commit `.env` to GitHub. The file is ignored by `.gitignore`, and the repository includes `.env.example` for setup.
->
-> The `service_role` key is never used or exposed in the mobile app.
 
 ---
 
+# 🔐 Security Note
 
-# Run the Application
+* Only Supabase **anon public key** is used in Flutter
+* `service_role` key is NEVER exposed in the app
+* `.env` is excluded from Git
 
-Basic run (auto-selects a connected device):
+---
+
+# ▶️ Run the App
 
 ```bash
 flutter run
 ```
 
-Run on a specific device:
+---
+
+## Platform Targets
+
+### Android / Emulator
 
 ```bash
 flutter devices
-flutter run -d <device_id>
+flutter run -d emulator
 ```
 
-## Run targets and platform tips
-
-### Windows (desktop)
-
-Ensure desktop support is enabled and required tooling installed:
+### Windows Desktop
 
 ```bash
 flutter config --enable-windows-desktop
-flutter doctor
-flutter pub get
 flutter run -d windows
 ```
 
-If you see build errors, run `flutter doctor` and install any missing Visual Studio components (Desktop development with C++).
-
-### App icon and logo for Desktop & Web
-
-- This project already includes the EthioFund logo at `assets/images/ethiofund_logo.png` and the mobile launcher is managed by `flutter_launcher_icons`.
-- For web (Chrome/Edge) the app uses the same logo as the favicon, PWA icon, and initial loading splash. These are configured in `web/index.html` and `web/manifest.json` to reference `assets/images/ethiofund_logo.png` so the branding matches mobile.
-- For Windows the application binary uses `windows/runner/resources/app_icon.ico` for the taskbar and executable icon. To make the Windows icon match the EthioFund logo you should:
-
-  1. Create an ICO file from your PNG (multiple sizes recommended: 16, 32, 48, 256). Example using ImageMagick:
+### Web (Chrome)
 
 ```bash
-magick convert assets/images/ethiofund_logo.png -resize 256x256 favicon-256.png
-magick convert favicon-256.png -define icon:auto-resize=64,48,32,16 windows/runner/resources/app_icon.ico
-```
-
-  2. Replace the existing `windows/runner/resources/app_icon.ico` with the generated file.
-  3. Rebuild the Windows app: `flutter build windows` (or `flutter run -d windows` for debug).
-
-Notes:
-- If you don't have ImageMagick installed, there are online converters or GUI tools to generate `.ico` from PNG.
-- The project uses `MaterialApp.title = 'EthioFund'` so desktop window title and web tab title will show the friendly name.
-### Web — Chrome
-
-Enable web support and run on Chrome:
-
-```bash
-flutter config --enable-web
-flutter pub get
 flutter run -d chrome
 ```
 
-### Web — Edge
-
-If Edge appears as a device, run directly; otherwise use the web-server and open in Edge manually:
-
-```bash
-flutter run -d edge
-# or
-flutter run -d web-server  # then open http://localhost:xxxx in Edge
-```
-
-Notes:
-- Ensure you have a compatible Chrome or Edge installation on the machine used for testing.
-- For web builds you may want to set `--web-renderer=html` or `--web-renderer=canvaskit` depending on performance and CanvasKit availability.
-
 ---
 
-## Untrack generated / build files (recommended)
+# 🏗️ Features
 
-You should not commit generated build artifacts to the repository. I updated `.gitignore` to include common generated files. To remove already-tracked generated files from the repository (without deleting them locally), run the following from the project root:
-
-```bash
-git rm -r --cached build .dart_tool .flutter-plugins-dependencies .metadata 2> /dev/null
-git add .gitignore
-git commit -m "chore: ignore and untrack generated files"
-git push
-```
-
-On Windows PowerShell you can run the same sequence (PowerShell redirects stderr with `2>$null`):
-
-```powershell
-git rm -r --cached build .dart_tool .flutter-plugins-dependencies .metadata 2>$null; git add .gitignore; git commit -m "chore: ignore and untrack generated files"; git push
-```
-
-This removes generated files from the git index while keeping them on your local disk.
-
----
-
-# Run Tests
-
-```bash
-flutter test
-```
-
----
-
-# Features
-
-* User Authentication
-* Role-Based Access
-* Campaign Creation
-* Campaign Browsing
-* Donation System
-* Campaign Updates & Comments
-* Withdrawal Requests
+* User Authentication (Supabase Auth)
+* Role-Based Access Control (Admin / Organizer / Donor)
+* Campaign Creation & Management
+* Campaign Browsing & Search
+* Donation System (Chapa Payment Integration)
 * Admin Dashboard
-* Supabase Storage Integration
+* Campaign Image Upload (Supabase Storage)
+* Real-time Updates & Notifications
 
 ---
 
-# Architecture Overview
+# 🧱 Architecture Overview
 
-* Flutter UI under `lib/`
-* Riverpod for state management
-* Supabase backend integration
-* Services under `lib/services/`
-* Models under `lib/models/`
-* Environment configuration using `flutter_dotenv`
-
----
-
-# Important Files
-
-* `lib/main.dart`
-* `lib/services/supabase_service.dart`
-* `lib/services/auth_service.dart`
-* `lib/services/admin_service.dart`
-* `supabase/schema.sql`
+* Flutter (Frontend)
+* Riverpod (State Management)
+* Supabase (Backend-as-a-Service)
+* PostgreSQL (Database)
+* Supabase Storage (Images & Media)
+* Supabase Edge Functions (Payment Webhooks)
+* Chapa Payment Gateway
 
 ---
 
-# Folder Structure
+# 📂 Project Structure
 
 ```text
 lib/
-├── app.dart
 ├── main.dart
+├── app.dart
 ├── core/
+├── features/
+│   ├── auth/
+│   ├── admin/
+│   ├── campaigns/
+│   ├── donations/
+│   └── profile/
 ├── services/
 ├── models/
-├── features/
 ├── providers/
 └── shared/
 
@@ -220,22 +163,31 @@ android/
 ios/
 web/
 windows/
-linux/
-macos/
 ```
 
 ---
 
-# Supabase Integration
+# 🧾 Important Files
 
-This app uses Supabase for:
+* lib/main.dart
+* lib/services/supabase_service.dart
+* lib/services/payment_service.dart
+* supabase/functions/chapa-initiate-payment
+* supabase/functions/chapa-webhook
+* supabase/migrations/
+
+---
+
+# ☁️ Supabase Integration
+
+Used for:
 
 * Authentication
-* PostgreSQL Database
+* Database (PostgreSQL)
 * File Storage
-* Realtime Features
+* Edge Functions
 
-Initialization example:
+Initialization:
 
 ```dart
 await Supabase.initialize(
@@ -246,48 +198,61 @@ await Supabase.initialize(
 
 ---
 
-# Security Notes
+# 🔒 Security Notes
 
-* Only the Supabase anon key is used.
-* The `service_role` key is never exposed to the client.
-* Row Level Security (RLS) should be enabled in Supabase.
-
----
-
-# Troubleshooting
-
-## Missing Environment Variables
-
-Ensure `.env` exists in the project root and contains `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
-
-If you are starting from the template, copy `.env.example` to `.env` first and then fill in the real values.
-
-## Authentication Errors
-
-* Verify Supabase Auth settings
-* Check project URL and anon key
-* Confirm email/password authentication is enabled
-
-## Database Permission Errors
-
-Verify Row Level Security (RLS) policies in Supabase.
+* Only anon key used in client
+* Service role key used only in Edge Functions
+* Row Level Security (RLS) enabled
+* Role-based access control enforced
 
 ---
 
-# Technologies Used
+# 🧪 Testing Roles
+
+| Role      | Email                                                                     | Password  |
+| --------- | ------------------------------------------------------------------------- | --------- |
+| Donor     | [ashenafibanchabassa01@gmail.com](mailto:ashenafibanchabassa01@gmail.com) | 387300    |
+| Organizer | [feruzhassen@gmail.com](mailto:feruzhassen@gmail.com)                     | 123456    |
+| Admin     | [admin@ethiofund.com](mailto:admin@ethiofund.com)                         | Admin1234 |
+
+---
+
+# 🛠️ Troubleshooting
+
+## Missing .env
+
+Ensure `.env` exists in root directory.
+
+## Auth Issues
+
+Check Supabase Auth settings.
+
+## Database Errors
+
+Enable RLS policies properly.
+
+---
+
+# 📦 Technologies Used
 
 * Flutter
 * Dart
 * Riverpod
-* Supabase Authentication
-* Supabase Database
-* Supabase Storage
+* Supabase
+* PostgreSQL
+* Supabase Edge Functions
+* Chapa Payment Gateway
 
 ---
 
-# Contributors
+# 👥 Contributors
 
- * 1. Ashenafi Bancha
- * 2. Elham Jemal
- * 3. Feruza Hassen
- * 4. Ihsan Jemal
+| Name            |
+| --------------- |
+| Ashenafi Bancha |
+| Elham Jemal     |
+| Feruza Hassen   |
+| Ihsan Jemal     |
+
+```
+
