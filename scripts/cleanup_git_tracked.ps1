@@ -1,6 +1,8 @@
 <#
-Removes common generated/build artifacts from the git index while keeping them locally.
-Usage (PowerShell):
+Removes generated Flutter files from Git tracking while keeping them locally.
+Stages .gitignore and creates a commit if changes are found.
+
+Usage:
   .\scripts\cleanup_git_tracked.ps1
 #>
 
