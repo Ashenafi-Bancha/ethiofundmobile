@@ -1,8 +1,6 @@
 # EthioFund Mobile
 
-EthioFund Mobile is a cross-platform Flutter application for crowdfunding projects in Ethiopia. It provides role-based user flows for donors, organizers, and administrators, including campaign discovery, donations, user profiles, comments/updates, and admin management.
-
-This repository contains the Flutter client application. The backend services are powered by Supabase (PostgreSQL + Authentication + Storage + Realtime).
+EthioFund Mobile is a Flutter-based cross-platform app designed to support crowdfunding in Ethiopia. It offers distinct user experiences for donors, organizers, and admins covering everything from browsing and funding campaigns to managing profiles, posting comments and updates, and handling administrative tasks. The app's backend runs on Supabase, leveraging its PostgreSQL database, authentication system, file storage, and real-time capabilities.
 
 ---
 
