@@ -17,6 +17,13 @@ class DonationCheckoutResult {
   final int donationId;
 }
 
+/// DonationService
+///
+/// Responsible for donation-related operations on the client. Important notes:
+/// - `initiateChapaPayment` asks the server (Edge Function) to create a pending
+///   donation and initialize the Chapa checkout; it returns the checkout URL,
+///   payment reference and donation id. The final payment confirmation is
+///   performed by the server-side webhook which marks the donation as completed.
 class DonationService {
   DonationService(this._supabaseService);
 

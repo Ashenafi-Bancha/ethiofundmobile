@@ -1,4 +1,17 @@
 // @ts-nocheck
+/**
+ * Edge Function: chapa-webhook
+ * Purpose: Receive Chapa callbacks and verify payment status with Chapa.
+ * When verified, mark the corresponding `donations.payment_status` as 'completed'
+ * and set `paid_at` so database triggers can safely increment campaign totals.
+ *
+ * Notes:
+ * - Uses `CHAPA_SECRET_KEY` and `SUPABASE_SERVICE_ROLE_KEY` environment variables.
+ * - This function verifies the transaction via Chapa's verify endpoint (safer
+ *   than trusting client-provided callbacks). Consider validating webhook
+ *   signatures if Chapa exposes them for additional security.
+ * - Updates are idempotent and matched by `payment_reference`/`tx_ref`.
+ */
 
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';

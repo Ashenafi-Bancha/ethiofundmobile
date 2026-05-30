@@ -7,6 +7,12 @@ import '../models/campaign_model.dart';
 import '../models/campaign_update_model.dart';
 import 'supabase_service.dart';
 
+/// CampaignService
+///
+/// Handles campaign CRUD and media uploads.
+/// Note: `uploadCampaignImage` uploads a `File` to the `campaign-images`
+/// storage bucket and returns the public URL. Bucket names are case-sensitive
+/// in Supabase storage — ensure `campaign-images` exists in your project.
 class CampaignService {
   CampaignService(this._supabaseService);
 

@@ -157,6 +157,10 @@ windows/
 * lib/services/payment_service.dart
 * supabase/functions/chapa-initiate-payment
 * supabase/functions/chapa-webhook
+
+Note: The client opens the Chapa checkout in an external browser and the
+final payment confirmation is performed server-side (Supabase Edge Function
+webhook). Do not rely on client return URLs for finalizing donations.
 * supabase/migrations/
 
 ---

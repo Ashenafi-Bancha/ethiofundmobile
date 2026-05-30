@@ -9,6 +9,11 @@ import '../../providers/campaign_provider.dart';
 import '../../providers/donation_provider.dart';
 import '../../shared/widgets/loading_widget.dart';
 
+/// DashboardScreen
+///
+/// Role-aware control center. Organizer and admin users see quick actions
+/// for campaign creation and management. The `_OrganizerHeroCard` highlights
+/// important organizer CTAs (Create campaign, Manage campaigns).
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 

@@ -1,4 +1,18 @@
 // @ts-nocheck
+/**
+ * Edge Function: chapa-initiate-payment
+ * Purpose: Create a pending donation record in Supabase and initialize
+ * a Chapa checkout session. Returns { donation_id, payment_reference, checkout_url }.
+ *
+ * Security:
+ * - Requires `SUPABASE_SERVICE_ROLE_KEY` and `CHAPA_SECRET_KEY` in environment.
+ * - This function must run server-side only (Edge Functions) to keep secrets safe.
+ * - Do NOT expose service role keys to the client.
+ *
+ * Flow notes:
+ * - Inserts donation with `payment_status: 'pending'` then calls Chapa initialize.
+ * - The Chapa webhook (`chapa-webhook`) is responsible for marking donations 'completed'.
+ */
 
 // @ts-ignore
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';

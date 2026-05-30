@@ -1,6 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'supabase_service.dart';
 
+/// Client-side payment helper.
+///
+/// Calls the Supabase Edge Function `chapa-initiate-payment` to create a
+/// server-side pending donation and initialize a Chapa checkout. The server
+/// keeps the `service_role` and Chapa secret keys secure; the client only
+/// receives a checkout URL to open in an external browser.
 class PaymentService {
   PaymentService(this._supabaseService);
 

@@ -32,6 +32,11 @@ InputDecoration _fieldDecoration(
   );
 }
 
+/// RegisterScreen
+///
+/// Presents registration UI and allows choosing an account role (donor/organizer).
+/// Security note: role assignment influences access; server-side checks and RLS
+/// policies must enforce permissions — client cannot be trusted alone.
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key, required this.initialRole});
 

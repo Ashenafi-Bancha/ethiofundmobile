@@ -13,6 +13,14 @@ import '../../shared/widgets/error_widget.dart';
 import '../../shared/widgets/loading_widget.dart';
 import '../../shared/widgets/primary_button.dart';
 
+/// DonateScreen
+///
+/// Presents a donation form and initiates the Chapa checkout flow. Behavior:
+/// - Calls `DonationService.initiateChapaPayment` which creates a pending
+///   donation server-side and returns a checkout URL.
+/// - Opens the checkout in the external browser (`LaunchMode.externalApplication`).
+/// - The server-side webhook (`chapa-webhook`) is relied upon to mark the
+///   donation `completed`; the client refreshes data after returning to the app.
 class DonateScreen extends ConsumerStatefulWidget {
   const DonateScreen({super.key, required this.campaignId});
 

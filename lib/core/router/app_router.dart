@@ -60,6 +60,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
   bool isAdminRoute(String location) => location.startsWith('/admin');
 
+  // IMPORTANT: place static routes (e.g. '/campaigns/create') before dynamic
+  // routes (e.g. '/campaigns/:id') so GoRouter doesn't treat the static path
+  // as a dynamic parameter. See route ordering below.
   return GoRouter(
     initialLocation: '/splash',
     redirect: (context, state) {
